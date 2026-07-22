@@ -1,5 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
+
+const INITIAL = [
+  'apple',
+  'apricot',
+  'banana',
+  'blueberry',
+  'cherry',
+  'grape',
+  'kiwi',
+  'lemon',
+  'mango',
+  'orange'
+];
 ---
 
 <Base title="HTMX demo — Skilluv starter">
@@ -15,9 +28,11 @@ import Base from '../layouts/Base.astro';
       placeholder="Search fruits…"
       class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2"
       hx-post="/api/search"
-      hx-trigger="input changed delay:200ms, load"
+      hx-trigger="input changed delay:200ms, keyup[key=='Enter']"
       hx-target="#results"
     />
-    <ul id="results" class="space-y-1 text-sm"></ul>
+    <ul id="results" class="space-y-1 text-sm">
+      {INITIAL.map((f) => <li class="border border-slate-800 rounded px-3 py-1">{f}</li>)}
+    </ul>
   </div>
 </Base>
