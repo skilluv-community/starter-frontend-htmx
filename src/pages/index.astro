@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base>
+  <h1 class="text-3xl font-bold mb-2">Skilluv starter — HTMX</h1>
+  <p class="text-slate-400 mb-8">
+    Astro 5 + HTMX 2 + Alpine 3 + Tailwind v4. Server-rendered by default, with tiny islands of
+    interactivity when you need them.
+  </p>
+
+  <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <a
+      href="/interactive"
+      class="rounded border border-slate-800 p-4 hover:border-emerald-600 transition-colors"
+    >
+      <h2 class="font-semibold mb-1">HTMX demo</h2>
+      <p class="text-sm text-slate-400">Server-driven search-as-you-type. No client state.</p>
+    </a>
+    <a
+      href="/counter"
+      class="rounded border border-slate-800 p-4 hover:border-emerald-600 transition-colors"
+    >
+      <h2 class="font-semibold mb-1">Alpine.js demo</h2>
+      <p class="text-sm text-slate-400">A small purely-client counter with Alpine directives.</p>
+    </a>
+  </section>
+</Base>

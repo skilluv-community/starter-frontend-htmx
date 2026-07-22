@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Counter — Skilluv starter">
+  <h1 class="text-2xl font-bold mb-2">Counter (Alpine.js)</h1>
+  <p class="text-slate-400 mb-6">
+    A tiny purely-client counter with Alpine's <code>x-data</code>. No network round-trips.
+  </p>
+
+  <div
+    class="rounded border border-slate-800 p-6 space-y-4"
+    x-data="{ count: 0, get doubled() { return this.count * 2 } }"
+  >
+    <p>
+      <span class="text-slate-400">Current value:</span>
+      <span class="text-2xl font-mono ml-2" data-testid="counter-value" x-text="count"></span>
+    </p>
+    <p class="text-sm text-slate-400">
+      Doubled: <span class="font-mono" x-text="doubled"></span>
+    </p>
+    <div class="flex gap-2">
+      <button
+        class="bg-emerald-600 hover:bg-emerald-500 rounded px-4 py-2 font-semibold"
+        @click="count++"
+      >
+        Increment
+      </button>
+      <button
+        class="bg-slate-800 hover:bg-slate-700 rounded px-4 py-2 font-semibold"
+        @click="count--"
+      >
+        Decrement
+      </button>
+      <button
+        class="border border-slate-700 hover:bg-slate-800 rounded px-4 py-2 font-semibold"
+        @click="count = 0"
+      >
+        Reset
+      </button>
+    </div>
+  </div>
+</Base>
