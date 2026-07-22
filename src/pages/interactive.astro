@@ -1,12 +1,24 @@
 ---
 import Base from '../layouts/Base.astro';
+
+const INITIAL = [
+  'apple',
+  'apricot',
+  'banana',
+  'blueberry',
+  'cherry',
+  'grape',
+  'kiwi',
+  'lemon',
+  'mango',
+  'orange'
+];
 ---
 
 <Base title="HTMX demo — Skilluv starter">
   <h1 class="text-2xl font-bold mb-2">Interactive (HTMX)</h1>
   <p class="text-slate-400 mb-6">
-    Type in the box below. Each keystroke posts to <code>/api/search</code> and swaps the results
-    fragment.
+    Type in the box below. Each keystroke posts to <code>/api/search</code> and swaps the results fragment.
   </p>
 
   <div class="rounded border border-slate-800 p-6 space-y-4">
@@ -16,9 +28,11 @@ import Base from '../layouts/Base.astro';
       placeholder="Search fruits…"
       class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2"
       hx-post="/api/search"
-      hx-trigger="input changed delay:200ms, load"
+      hx-trigger="input changed delay:200ms, keyup[key=='Enter']"
       hx-target="#results"
     />
-    <ul id="results" class="space-y-1 text-sm"></ul>
+    <ul id="results" class="space-y-1 text-sm">
+      {INITIAL.map((f) => <li class="border border-slate-800 rounded px-3 py-1">{f}</li>)}
+    </ul>
   </div>
 </Base>

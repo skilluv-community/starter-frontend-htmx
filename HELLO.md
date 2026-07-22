@@ -3,6 +3,7 @@
 Welcome to your first Skilluv project!
 
 Edit this file by adding a line under `## My introduction` with:
+
 - Your first name or handle
 - Your city (optional)
 - What you want to learn
@@ -18,6 +19,7 @@ Skilluv will automatically detect your PR and unlock your first badge.
 Bienvenue dans ton premier projet Skilluv !
 
 Modifie ce fichier en ajoutant une ligne sous `## Ma présentation` avec :
+
 - Ton prénom ou pseudo
 - Ta ville (facultatif)
 - Ce que tu veux apprendre
