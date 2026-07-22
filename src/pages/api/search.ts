@@ -23,13 +23,17 @@ const CORPUS = [
 ];
 
 function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[c] as string);
+  return s.replace(
+    /[&<>"']/g,
+    (c) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[c] as string
+  );
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -39,10 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const body = matches.length
     ? matches
-        .map(
-          (m) =>
-            `<li class="border border-slate-800 rounded px-3 py-1">${escapeHtml(m)}</li>`
-        )
+        .map((m) => `<li class="border border-slate-800 rounded px-3 py-1">${escapeHtml(m)}</li>`)
         .join('')
     : '<li class="text-slate-500 italic">No match.</li>';
 
