@@ -20,19 +20,25 @@ test('HTMX search API returns filtered results', async ({ request }) => {
   // integration is intentionally not exercised in CI: it depends on the
   // htmx.min.js CDN load + client-side event chain, both of which are flaky
   // when the runner has slow egress. Manual QA covers that path.
-  const body = await request.post('/api/search', {
-    form: { q: 'mang' },
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  //
+  // Playwright's `form:` option serialises as multipart/form-data with a
+  // boundary — Astro's request.formData() will parse it, but the raw URL
+  // encoded form is what HTMX actually sends, so we mirror that here.
+  const response = await request.post('/api/search', {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    data: new URLSearchParams({ q: 'mang' }).toString()
   });
-  expect(body.ok()).toBeTruthy();
-  const html = await body.text();
+  const html = await response.text();
+  expect(
+    response.status(),
+    `unexpected status: ${response.status()} body=${html.slice(0, 200)}`
+  ).toBe(200);
   expect(html.toLowerCase()).toContain('mango');
   expect(html.toLowerCase()).not.toContain('apple');
 });
 
 test('interactive page renders the seeded list', async ({ page }) => {
   await page.goto('/interactive');
-  // At least one seeded fruit is present before any HTMX call.
   const first = page.locator('#results li').first();
   await expect(first).toBeVisible();
 });
