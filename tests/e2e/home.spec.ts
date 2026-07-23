@@ -22,7 +22,7 @@ test('HTMX search API returns filtered results', async ({ request }) => {
   // when the runner has slow egress. Manual QA covers that path.
   const body = await request.post('/api/search', {
     form: { q: 'mang' },
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
   });
   expect(body.ok()).toBeTruthy();
   const html = await body.text();
