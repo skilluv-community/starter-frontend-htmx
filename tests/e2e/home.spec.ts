@@ -25,7 +25,12 @@ test('HTMX search API returns filtered results', async ({ request }) => {
   // boundary — Astro's request.formData() will parse it, but the raw URL
   // encoded form is what HTMX actually sends, so we mirror that here.
   const response = await request.post('/api/search', {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      // Astro 5 blocks cross-site POST form submissions by default.
+      // Mirror the origin so the origin check passes.
+      Origin: 'http://localhost:4321'
+    },
     data: new URLSearchParams({ q: 'mang' }).toString()
   });
   const html = await response.text();
