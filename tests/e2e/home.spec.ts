@@ -15,31 +15,24 @@ test('counter (Alpine) increments client-side', async ({ page }) => {
   await expect(value).toHaveText('2');
 });
 
-test('HTMX search API returns filtered results', async ({ request }) => {
-  // Verify the /api/search endpoint at the HTTP layer. The DOM-level HTMX
-  // integration is intentionally not exercised in CI: it depends on the
-  // htmx.min.js CDN load + client-side event chain, both of which are flaky
-  // when the runner has slow egress. Manual QA covers that path.
-  //
-  // Playwright's `form:` option serialises as multipart/form-data with a
-  // boundary — Astro's request.formData() will parse it, but the raw URL
-  // encoded form is what HTMX actually sends, so we mirror that here.
-  const response = await request.post('/api/search', {
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      // Astro 5 blocks cross-site POST form submissions by default.
-      // Mirror the origin so the origin check passes.
-      Origin: 'http://localhost:4321'
-    },
-    data: new URLSearchParams({ q: 'mang' }).toString()
+test('HTMX search API returns filtered results', async ({ page }) => {
+  // Verify the /api/search endpoint by fetching from inside the page context,
+  // so Astro 5's cross-site POST protection sees a same-origin request. The
+  // DOM-level HTMX event chain is not exercised here — that depends on the
+  // htmx.min.js CDN load and is covered manually. The API is what matters
+  // for the starter's behaviour.
+  await page.goto('/interactive');
+  const result = await page.evaluate(async () => {
+    const r = await fetch('/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ q: 'mang' }).toString()
+    });
+    return { status: r.status, html: (await r.text()).toLowerCase() };
   });
-  const html = await response.text();
-  expect(
-    response.status(),
-    `unexpected status: ${response.status()} body=${html.slice(0, 200)}`
-  ).toBe(200);
-  expect(html.toLowerCase()).toContain('mango');
-  expect(html.toLowerCase()).not.toContain('apple');
+  expect(result.status).toBe(200);
+  expect(result.html).toContain('mango');
+  expect(result.html).not.toContain('apple');
 });
 
 test('interactive page renders the seeded list', async ({ page }) => {
