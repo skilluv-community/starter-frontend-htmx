@@ -17,8 +17,21 @@ test('counter (Alpine) increments client-side', async ({ page }) => {
 
 test('HTMX search filters results', async ({ page }) => {
   await page.goto('/interactive');
-  // Wait for initial `hx-trigger="load"` to populate the list.
-  await expect(page.locator('#results li').first()).toBeVisible();
-  await page.getByPlaceholder(/search/i).fill('mang');
-  await expect(page.locator('#results li').first()).toHaveText(/mango/i);
+  // Wait for HTMX to be attached (script is loaded with `defer` in Base.astro).
+  await page.waitForFunction(() => 'htmx' in window);
+
+  // Initial server-seeded list is visible.
+  const first = page.locator('#results li').first();
+  await expect(first).toBeVisible();
+
+  // Type character-by-character so each keystroke fires an `input` event that
+  // hx-trigger can debounce against. `page.fill()` sets the value in one shot
+  // and can occasionally race the debounce window in CI.
+  const input = page.getByPlaceholder(/search/i);
+  await input.focus();
+  await input.pressSequentially('mang', { delay: 60 });
+
+  // Wait for HTMX to swap the results, then assert on the filtered content.
+  await page.waitForResponse((r) => r.url().endsWith('/api/search') && r.status() === 200);
+  await expect(first).toHaveText(/mango/i);
 });
