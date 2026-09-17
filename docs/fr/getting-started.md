@@ -19,14 +19,14 @@ Astro dev server sur <http://localhost:4321>.
 
 ## Scripts
 
-| Commande | Rôle |
-|---|---|
-| `npm run dev` | Astro dev + HMR |
-| `npm run build` | Build de prod (`dist/`) |
-| `npm run preview` | Sert le build |
-| `npm run check` | `astro check` |
-| `npm run lint` | ESLint + Prettier |
-| `npm run test:e2e` | Playwright |
+| Commande           | Rôle                    |
+| ------------------ | ----------------------- |
+| `npm run dev`      | Astro dev + HMR         |
+| `npm run build`    | Build de prod (`dist/`) |
+| `npm run preview`  | Sert le build           |
+| `npm run check`    | `astro check`           |
+| `npm run lint`     | ESLint + Prettier       |
+| `npm run test:e2e` | Playwright              |
 
 ## Déploiement
 
